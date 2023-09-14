@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import pl.baftek.opencaching.features.geocache.GeocacheRoute
 import pl.baftek.opencaching.features.geocache.GeocacheScreen
 import pl.baftek.opencaching.features.map.MapScreen
 import pl.baftek.opencaching.features.sign_in.SignInScreen
@@ -30,12 +31,12 @@ fun OpencachingNavHost(
         }
         composable(Destinations.MAP_ROUTE) {
             MapScreen(
-                onNavigateToGeocache = { code -> navController.navigate("geocache/$code") }
+                onNavigateToGeocache = { cache -> navController.navigate("geocache/${cache.code}") }
             )
         }
         composable(Destinations.GEOCACHE_ROUTE) {
             val code = it.arguments?.getString("code") ?: "empty"
-            GeocacheScreen(
+            GeocacheRoute(
                 code = code,
                 onBackTap = { navController.popBackStack() }
             )

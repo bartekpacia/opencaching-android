@@ -14,6 +14,8 @@ const val API_URL = "https://opencaching.pl/okapi/services"
 const val CONSUMER_KEY = "duM7DuHSXQtLK7PCx9ee"
 
 class CachesRepository(private val client: HttpClient) {
+    private val basicParams = "code|name|location|status|type"
+    private val fullParams = "code|name|location|status|type|owner|description|difficulty|terrain|size|hint|date"
 
     /// https://opencaching.pl/okapi/services/caches/shortcuts/search_and_retrieve.html
     suspend fun searchAndRetrieve(bbox: BoundingBox): Map<String, Geocache> {
@@ -23,10 +25,7 @@ class CachesRepository(private val client: HttpClient) {
             parameter("search_method", "services/caches/search/bbox")
             parameter("search_params", Json.encodeToString(mapOf("bbox" to bbox.toPipeFormat())))
             parameter("retr_method", "services/caches/geocaches")
-            parameter(
-                "retr_params",
-                Json.encodeToString(mapOf("fields" to "code|name|location|status|type|url|owner"))
-            )
+            parameter("retr_params", Json.encodeToString(mapOf("fields" to fullParams)))
             parameter("wrap", false)
         }
 

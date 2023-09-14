@@ -1,6 +1,7 @@
 package pl.baftek.opencaching.data
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
 import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
@@ -12,15 +13,30 @@ data class Geocache(
     val code: String,
     val name: String,
     val location: Location,
-    val type: Type,
     val status: Status,
-    val url: String,
-    val owner: User,
+    val type: Type,
 ) {
     enum class Type { Traditional, Multi, Moving, Quiz, Own, Webcam, Other }
 
     enum class Status { Available, TEMPORARILY_UNAVAILABLE, ARCHIVED }
 }
+
+@Serializable
+data class FullGeocache(
+    val code: String,
+    val name: String,
+    val location: Location,
+    val status: Geocache.Status,
+    val type: Geocache.Type,
+    val url: String,
+    val owner: User,
+    val description: String,
+    val difficulty: Double,
+    val terrain: Double,
+    val size: Int,
+    val hint: String,
+    @SerialName("date_hidden") val dateHidden: String,
+)
 
 @Serializable(with = LocationAsStringSerializer::class)
 data class Location(

@@ -39,7 +39,6 @@ fun Map(
     }
 
     LaunchedEffect(cameraPositionState.position.target) {
-        // debugLog("Map", "moving!")
         onMapBoundsChange(cameraPositionState.projection?.visibleRegion?.latLngBounds?.toBoundingBox())
     }
 
