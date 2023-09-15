@@ -72,7 +72,7 @@ fun MapScreen(
             modifier = Modifier.padding(padding)
         ) {
             Map(
-                Modifier.padding(8.dp),
+                modifier = Modifier.padding(8.dp),
                 center = centerOfRudy,
                 caches = geocaches.values.toList(),
                 onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },

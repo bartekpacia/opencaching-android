@@ -45,9 +45,7 @@ fun Map(
     GoogleMap(
         modifier = modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
-        googleMapOptionsFactory = {
-            GoogleMapOptions().mapType(MapType.SATELLITE.value)
-        },
+        googleMapOptionsFactory = { GoogleMapOptions().mapType(MapType.SATELLITE.value) },
         onMapLoaded = {
             debugLog("Map", "loaded!")
             onMapBoundsChange(

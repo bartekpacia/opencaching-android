@@ -12,9 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MonitorHeart
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.List
@@ -24,7 +27,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -64,6 +66,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
     ) { padding ->
         Column(
             modifier = Modifier
+                .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
                 .padding(padding)
         ) {
@@ -77,6 +80,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                 Text(
                     text = geocache.name,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    textAlign = TextAlign.Center,
                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                 )
 
@@ -112,6 +116,19 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     ) {
                         Text("Log cache")
                     }
+                }
+
+                Row(
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Heart icon"
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text("${geocache.recommendations} recommendations")
                 }
             }
 
@@ -160,6 +177,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     TextButton(
                         onClick = { /*TODO*/ },
                         modifier = Modifier.weight(1f),
+                        shape = MaterialTheme.shapes.extraSmall,
                     ) {
                         Text("Hint")
                     }
@@ -174,6 +192,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     TextButton(
                         onClick = { /*TODO*/ },
                         modifier = Modifier.weight(1f),
+                        shape = MaterialTheme.shapes.extraSmall,
                     ) {
                         Text("Message")
                     }
@@ -228,7 +247,7 @@ fun GeocacheInfoTile(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(0.5f.dp)
+                        .height(1f.dp)
                         .background(Color.Gray)
                 )
             }
@@ -239,11 +258,7 @@ fun GeocacheInfoTile(
                 tint = MaterialTheme.colorScheme.onSurface,
                 contentDescription = "Select $title"
             )
-        },
-        colors = ListItemDefaults.colors(
-            // containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            // contentColor = MaterialTheme.colorScheme.onSurface,
-        )
+        }
     )
 }
 
@@ -266,7 +281,7 @@ fun GeocacheScreemPreviewDark() {
 
 private val sampleGeocache = FullGeocache(
     code = "GC1234",
-    name = "Drewniany most na Rudzie",
+    name = "Drewniany most na długiej rzece Rudzie",
     location = Location(latitude = 50.196168, longitude = 18.446953),
     type = Geocache.Type.Traditional,
     status = Geocache.Status.Available,
@@ -282,4 +297,5 @@ private val sampleGeocache = FullGeocache(
     url = "https://opencaching.pl/viewcache.php?wp=OP9655",
     hint = "Hint: it's here",
     dateHidden = "12/12/2022",
+    recommendations = 3,
 )

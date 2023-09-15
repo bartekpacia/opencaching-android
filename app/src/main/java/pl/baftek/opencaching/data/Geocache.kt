@@ -36,6 +36,7 @@ data class FullGeocache(
     val size: Int,
     val hint: String,
     @SerialName("date_hidden") val dateHidden: String,
+    val recommendations: Int,
 )
 
 @Serializable(with = LocationAsStringSerializer::class)
