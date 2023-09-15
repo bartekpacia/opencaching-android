@@ -18,7 +18,7 @@ data class Geocache(
 ) {
     enum class Type { Traditional, Multi, Moving, Quiz, Own, Webcam, Other }
 
-    enum class Status { Available, TEMPORARILY_UNAVAILABLE, ARCHIVED }
+    enum class Status { Available, TEMPORARILY_UNAVAILABLE, Archived }
 }
 
 @Serializable
