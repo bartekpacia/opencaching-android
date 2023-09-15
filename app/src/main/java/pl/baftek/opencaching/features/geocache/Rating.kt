@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -44,20 +43,22 @@ fun Rating(
             for (i in 1..5) {
                 val halved = i == rating.toInt() + 1 && rating % 1 != 0f
 
+                val activeColor = MaterialTheme.colorScheme.primary
+                val inactiveColor = MaterialTheme.colorScheme.inversePrimary
+
                 Box(modifier = Modifier
-                    .height(8.dp)
-                    .width(8.dp)
-                    .clip(RoundedCornerShape(1.5f.dp))
+                    .height(12.dp)
+                    .width(12.dp)
+                    .clip(RoundedCornerShape(3f.dp))
                     .drawBehind {
                         drawRect(
-                            color = if (i - 0.5f <= rating) Color.Green else Color.LightGray,
-                            size =
-                            if (!halved) size else size.copy(width = size.width / 2)
+                            color = if (i - 0.5f <= rating) activeColor else inactiveColor,
+                            size = if (!halved) size else size.copy(width = size.width / 2)
                         )
 
                         if (halved) {
                             drawRect(
-                                color = Color.LightGray,
+                                color = inactiveColor,
                                 topLeft = Offset(size.width / 2, 0f),
                                 size = size.copy(width = size.width / 2)
                             )

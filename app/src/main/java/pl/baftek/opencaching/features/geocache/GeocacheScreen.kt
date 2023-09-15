@@ -1,12 +1,12 @@
 package pl.baftek.opencaching.features.geocache
 
-import androidx.annotation.FloatRange
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MonitorHeart
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.material.icons.rounded.Navigation
 import androidx.compose.material3.Button
@@ -23,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -33,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import pl.baftek.opencaching.data.FullGeocache
@@ -64,96 +67,120 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                 .fillMaxWidth()
                 .padding(padding)
         ) {
-            Text(
-                text = geocache.name,
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                fontSize = MaterialTheme.typography.titleLarge.fontSize,
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
-            ) {
-                Text(geocache.code)
-                Text("•")
-                Text("${geocache.type}")
-            }
-
-            Row(
-                modifier = Modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Button(
-                    onClick = {},
-                    modifier = Modifier.weight(1f),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Navigation,
-                        contentDescription = "Navigate"
-                    )
-
-                    Text("Navigate")
-                }
-
-                Button(
-                    onClick = {},
-                    modifier = Modifier.weight(1f),
-                    shape = MaterialTheme.shapes.small
-                ) {
-                    Text("Log cache")
-                }
-            }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                Text("Difficulty: ${geocache.difficulty}")
-                Text("Terrain: ${geocache.terrain}")
-                Text("Size: ${geocache.size}")
-            }
-
-            Text(
-                text = "Placed by: ${geocache.owner.username}",
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-            Text(
-                text = "on ${geocache.dateHidden}",
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color.Gray)
-            )
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = geocache.name,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                ) {
+                    Text(geocache.code)
+                    Text("•")
+                    Text("${geocache.type}")
+                }
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    Button(
+                        onClick = {},
+                        modifier = Modifier.weight(1f),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Navigation,
+                            contentDescription = "Navigate"
+                        )
+
+                        Text("Navigate")
+                    }
+
+                    Button(
+                        onClick = {},
+                        modifier = Modifier.weight(1f),
+                        shape = MaterialTheme.shapes.small
+                    ) {
+                        Text("Log cache")
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(
-                modifier = Modifier.height(IntrinsicSize.Max),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(12.dp),
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
-                TextButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.weight(1f),
-                ) {
-                    Text("Hint")
-                }
+                Rating(rating = geocache.difficulty, title = "Difficulty")
+                Rating(rating = geocache.terrain, title = "Terrain")
+                Rating(rating = geocache.size.toFloat(), title = "Size")
+            }
+
+
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+            ) {
+
+                Text(
+                    text = "Placed by: ${geocache.owner.username}\non ${geocache.dateHidden}",
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(12.dp),
+                    textAlign = TextAlign.Center,
+                )
 
                 Box(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp)
+                        .fillMaxWidth()
+                        .height(1.dp)
                         .background(Color.Gray)
                 )
 
-                TextButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.weight(1f),
+                Row(
+                    modifier = Modifier.height(IntrinsicSize.Max),
                 ) {
-                    Text("Hint")
+                    TextButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("Hint")
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp)
+                            .background(Color.Gray)
+                    )
+
+                    TextButton(
+                        onClick = { /*TODO*/ },
+                        modifier = Modifier.weight(1f),
+                    ) {
+                        Text("Message")
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             Column {
                 GeocacheInfoTile(
@@ -194,7 +221,29 @@ fun GeocacheInfoTile(
             )
         },
         headlineContent = { Text(title) },
-        supportingContent = { Text(subtitle) },
+        supportingContent = {
+            Column {
+                Text(subtitle)
+                Spacer(modifier = Modifier.height(4.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.5f.dp)
+                        .background(Color.Gray)
+                )
+            }
+        },
+        trailingContent = {
+            Icon(
+                imageVector = Icons.Rounded.ChevronRight,
+                tint = MaterialTheme.colorScheme.onSurface,
+                contentDescription = "Select $title"
+            )
+        },
+        colors = ListItemDefaults.colors(
+            // containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            // contentColor = MaterialTheme.colorScheme.onSurface,
+        )
     )
 }
 
@@ -221,8 +270,8 @@ private val sampleGeocache = FullGeocache(
     location = Location(latitude = 50.196168, longitude = 18.446953),
     type = Geocache.Type.Traditional,
     status = Geocache.Status.Available,
-    difficulty = 2.5,
-    terrain = 2.5,
+    difficulty = 2.5f,
+    terrain = 2.5f,
     size = 2,
     owner = User(
         username = "Bartek_Wojak",
