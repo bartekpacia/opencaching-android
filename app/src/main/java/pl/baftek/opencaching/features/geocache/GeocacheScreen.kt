@@ -48,8 +48,13 @@ import pl.baftek.opencaching.ui.theme.OpencachingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
+fun GeocacheScreen(
+    geocache: FullGeocache,
+    modifier: Modifier = Modifier,
+    onNavUp: () -> Unit = {},
+) {
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text("Geocache ${geocache.code}") },
@@ -202,7 +207,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                 GeocacheInfoTile(
                     icon = Icons.Rounded.List,
                     title = "Description",
-                    subtitle = geocache.description,
+                    subtitle = geocache.description.split(" ").take(4).joinToString(" ") + "...",
                 )
 
                 GeocacheInfoTile(
