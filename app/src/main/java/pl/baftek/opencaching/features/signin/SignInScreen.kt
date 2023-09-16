@@ -1,5 +1,7 @@
 package pl.baftek.opencaching.features.signin
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,7 +35,9 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import pl.baftek.opencaching.ui.theme.OpencachingTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,9 +52,9 @@ fun SignInScreen(
     val localFocusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = modifier.pointerInput(Unit) {
-            detectTapGestures(onTap = { localFocusManager.clearFocus() })
-        },
+        modifier = modifier
+            .pointerInput(Unit) { detectTapGestures(onTap = { localFocusManager.clearFocus() }) }
+            .background(color = MaterialTheme.colorScheme.background),
         topBar = { TopAppBar(title = { Text("Opencaching") }) },
     ) { padding ->
         Box(
@@ -105,11 +110,18 @@ fun SignInScreen(
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.75f)
                         .padding(8.dp),
-
                 ) {
                     Text("Sign in")
                 }
             }
         }
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES, showSystemUi = true)
+@Composable
+fun SignInScreenPreview() {
+    OpencachingTheme {
+        SignInScreen(onNavigateToMap = {})
     }
 }

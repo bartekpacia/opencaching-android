@@ -91,7 +91,7 @@ fun GeocacheDescriptionScreen(
 
 @Preview
 @Composable
-private fun GeocacheDescriptionScreen_Preview() {
+private fun GeocacheDescriptionScreenPreview() {
     GeocacheDescriptionScreen(
         html = "xdxdxd",
     )
