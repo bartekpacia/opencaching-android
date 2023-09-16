@@ -2,10 +2,12 @@ package pl.baftek.opencaching.data
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import pl.baftek.opencaching.debugLog
@@ -13,7 +15,17 @@ import pl.baftek.opencaching.debugLog
 const val API_URL = "https://opencaching.pl/okapi/services"
 const val CONSUMER_KEY = "duM7DuHSXQtLK7PCx9ee"
 
-class CachesRepository(private val client: HttpClient) {
+private val defaultHttpClient = HttpClient {
+    install(ContentNegotiation) {
+        json(
+            Json {
+                ignoreUnknownKeys = true
+            },
+        )
+    }
+}
+
+class CachesRepository(private val client: HttpClient = defaultHttpClient) {
     // private val basicParams = "code|name|location|status|type"
 
     private val fullParams =

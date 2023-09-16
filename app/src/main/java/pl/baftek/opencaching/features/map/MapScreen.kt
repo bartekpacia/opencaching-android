@@ -26,9 +26,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -62,19 +59,7 @@ fun MapScreen(
         init = { mutableStateMapOf() },
     )
 
-    val httpClient = remember {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                    },
-                )
-            }
-        }
-    }
-
-    val repository = remember { CachesRepository(httpClient) }
+    val repository = remember { CachesRepository() }
 
     var lastInstant by remember { mutableStateOf(Clock.System.now()) }
 

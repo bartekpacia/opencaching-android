@@ -11,28 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
-import kotlinx.serialization.json.Json
 import pl.baftek.opencaching.data.CachesRepository
 import pl.baftek.opencaching.data.FullGeocache
 
 @Composable
 fun GeocacheRoute(code: String, onBackTap: () -> Unit) {
-    val httpClient = remember {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        ignoreUnknownKeys = true
-                    },
-                )
-            }
-        }
-    }
-    val repository = remember { CachesRepository(httpClient) }
+    val repository = remember { CachesRepository() }
 
     val geocache = remember { mutableStateOf<FullGeocache?>(null) }
 

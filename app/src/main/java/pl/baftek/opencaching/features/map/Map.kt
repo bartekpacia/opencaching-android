@@ -26,11 +26,11 @@ import pl.baftek.opencaching.debugLog
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun Map(
-    modifier: Modifier,
     center: Location,
     caches: List<Geocache>,
     onGeocacheClick: (String) -> Unit,
     onMapBoundsChange: (BoundingBox?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     debugLog("Map", "recomposition!")
 
