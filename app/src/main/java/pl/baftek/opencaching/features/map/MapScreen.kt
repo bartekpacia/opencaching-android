@@ -22,7 +22,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,14 +45,17 @@ fun MapScreen(
     val centerOfRudy = remember { Location(latitude = 50.196168, longitude = 18.446953) }
 
     val scope = rememberCoroutineScope()
-    val geocaches: SnapshotStateMap<String, Geocache> = rememberSaveable(
+    val geocaches = rememberSaveable(
         saver = mapSaver(
             save = { it.entries.associate { entry -> entry.key to Json.encodeToString(entry.value) } },
             restore = {
-                val pairs = it.entries.map { entry ->
-                    entry.key to Json.decodeFromString<Geocache>(entry.value as String)
+                mutableStateMapOf<String, Geocache>().apply {
+                    putAll(
+                        it.entries.map { entry ->
+                            entry.key to Json.decodeFromString<Geocache>(entry.value as String)
+                        },
+                    )
                 }
-                mutableStateMapOf(*pairs.toTypedArray())
             },
         ),
         init = { mutableStateMapOf() },
