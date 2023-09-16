@@ -12,7 +12,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -27,11 +26,11 @@ import pl.baftek.opencaching.debugLog
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun Map(
-    modifier: Modifier,
     center: Location,
     caches: List<Geocache>,
     onGeocacheClick: (String) -> Unit,
     onMapBoundsChange: (BoundingBox?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     debugLog("Map", "recomposition!")
 
@@ -50,9 +49,9 @@ fun Map(
         onMapLoaded = {
             debugLog("Map", "loaded!")
             onMapBoundsChange(
-                cameraPositionState.projection?.visibleRegion?.latLngBounds?.toBoundingBox()
+                cameraPositionState.projection?.visibleRegion?.latLngBounds?.toBoundingBox(),
             )
-        }
+        },
     ) {
         for (cache in caches) {
             val state = rememberMarkerState(position = cache.location.toLatLng())
@@ -69,7 +68,7 @@ fun Map(
                     GlobalScope.launch(Dispatchers.Main) {
                         onGeocacheClick(cache.code)
                     }
-                }
+                },
             )
         }
     }

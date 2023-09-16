@@ -57,10 +57,10 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     IconButton(onClick = onNavUp) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
-                }
+                },
             )
         },
     ) { padding ->
@@ -68,14 +68,14 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxWidth()
-                .padding(padding)
+                .padding(padding),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = geocache.name,
@@ -94,16 +94,16 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     Button(
                         onClick = {},
                         modifier = Modifier.weight(1f),
-                        shape = MaterialTheme.shapes.small
+                        shape = MaterialTheme.shapes.small,
                     ) {
                         Icon(
                             imageVector = Icons.Rounded.Navigation,
-                            contentDescription = "Navigate"
+                            contentDescription = "Navigate",
                         )
 
                         Text("Navigate")
@@ -112,18 +112,18 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     Button(
                         onClick = {},
                         modifier = Modifier.weight(1f),
-                        shape = MaterialTheme.shapes.small
+                        shape = MaterialTheme.shapes.small,
                     ) {
                         Text("Log cache")
                     }
                 }
 
                 Row(
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = "Heart icon"
+                        contentDescription = "Heart icon",
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
@@ -139,23 +139,20 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(12.dp),
-                horizontalArrangement = Arrangement.SpaceAround
+                horizontalArrangement = Arrangement.SpaceAround,
             ) {
                 Rating(rating = geocache.difficulty, title = "Difficulty")
                 Rating(rating = geocache.terrain, title = "Terrain")
                 Rating(rating = geocache.size.toFloat(), title = "Size")
             }
 
-
-
             Spacer(modifier = Modifier.height(12.dp))
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             ) {
-
                 Text(
                     text = "Placed by: ${geocache.owner.username}\non ${geocache.dateHidden}",
                     modifier = Modifier
@@ -168,7 +165,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1.dp)
-                        .background(Color.Gray)
+                        .background(Color.Gray),
                 )
 
                 Row(
@@ -186,7 +183,7 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
                         modifier = Modifier
                             .fillMaxHeight()
                             .width(1.dp)
-                            .background(Color.Gray)
+                            .background(Color.Gray),
                     )
 
                     TextButton(
@@ -226,17 +223,17 @@ fun GeocacheScreen(geocache: FullGeocache, onNavUp: () -> Unit) {
 
 @Composable
 fun GeocacheInfoTile(
-    modifier: Modifier = Modifier,
     icon: ImageVector,
     title: String,
     subtitle: String,
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         modifier = modifier,
         leadingContent = {
             Icon(
                 imageVector = icon,
-                contentDescription = title
+                contentDescription = title,
             )
         },
         headlineContent = { Text(title) },
@@ -248,7 +245,7 @@ fun GeocacheInfoTile(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(1f.dp)
-                        .background(Color.Gray)
+                        .background(Color.Gray),
                 )
             }
         },
@@ -256,15 +253,15 @@ fun GeocacheInfoTile(
             Icon(
                 imageVector = Icons.Rounded.ChevronRight,
                 tint = MaterialTheme.colorScheme.onSurface,
-                contentDescription = "Select $title"
+                contentDescription = "Select $title",
             )
-        }
+        },
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GeocacheScreemPreview() {
+private fun GeocacheScreemPreview() {
     OpencachingTheme {
         GeocacheScreen(geocache = sampleGeocache) {}
     }
@@ -272,12 +269,11 @@ fun GeocacheScreemPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun GeocacheScreemPreviewDark() {
+private fun GeocacheScreemPreviewDark() {
     OpencachingTheme(darkTheme = true) {
         GeocacheScreen(geocache = sampleGeocache) {}
     }
 }
-
 
 private val sampleGeocache = FullGeocache(
     code = "GC1234",
@@ -291,7 +287,7 @@ private val sampleGeocache = FullGeocache(
     owner = User(
         username = "Bartek_Wojak",
         uuid = "1234",
-        profile_url = "https://opencaching.pl/images/avatars/1234.jpg",
+        profileUrl = "https://opencaching.pl/images/avatars/1234.jpg",
     ),
     description = "This is a test geocache",
     url = "https://opencaching.pl/viewcache.php?wp=OP9655",

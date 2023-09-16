@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,9 +26,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.ktor.client.HttpClient
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -39,11 +37,11 @@ import pl.baftek.opencaching.data.Location
 import pl.baftek.opencaching.debugLog
 import kotlin.time.Duration.Companion.seconds
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     onNavigateToGeocache: (Geocache) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val centerOfRudy = remember { Location(latitude = 50.196168, longitude = 18.446953) }
 
@@ -56,29 +54,19 @@ fun MapScreen(
                     entry.key to Json.decodeFromString<Geocache>(entry.value as String)
                 }
                 mutableStateMapOf(*pairs.toTypedArray())
-            }
+            },
         ),
         init = { mutableStateMapOf() },
     )
 
-
-    val httpClient = remember {
-        HttpClient {
-            install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
-            }
-        }
-    }
-
-    val repository = remember { CachesRepository(httpClient) }
+    val repository = remember { CachesRepository() }
 
     var lastInstant by remember { mutableStateOf(Clock.System.now()) }
 
-    var selectedNavBarItem by remember { mutableStateOf(0) }
+    var selectedNavBarItem by remember { mutableIntStateOf(0) }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text("Map") },
@@ -86,7 +74,7 @@ fun MapScreen(
         },
         content = { padding ->
             Column(
-                modifier = Modifier.padding(padding)
+                modifier = Modifier.padding(padding),
             ) {
                 Map(
                     modifier = Modifier.padding(8.dp),
@@ -108,13 +96,9 @@ fun MapScreen(
 
                         scope.launch {
                             delay(500)
-                            try {
-                                geocaches.putAll(repository.searchAndRetrieve(it))
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+                            geocaches.putAll(repository.searchAndRetrieve(it))
                         }
-                    }
+                    },
                 )
             }
         },
@@ -134,10 +118,9 @@ fun MapScreen(
                     label = { Text("Profile") },
                 )
             }
-        }
+        },
     )
 }
-
 
 @Preview
 @Composable

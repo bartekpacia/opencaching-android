@@ -1,7 +1,10 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -51,6 +54,12 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    tasks.withType<Detekt> {
+        config.setFrom(file("../config/detekt/detekt.yml"))
+        buildUponDefaultConfig = true
+        autoCorrect = true
+    }
 }
 
 dependencies {
@@ -78,6 +87,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
     implementation("io.ktor:ktor-client-okhttp:2.3.4")
 
@@ -87,4 +97,8 @@ dependencies {
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+
+    lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 }

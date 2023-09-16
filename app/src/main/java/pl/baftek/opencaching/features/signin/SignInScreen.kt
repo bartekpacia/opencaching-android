@@ -1,4 +1,4 @@
-package pl.baftek.opencaching.features.sign_in
+package pl.baftek.opencaching.features.signin
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
@@ -37,26 +37,26 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
+    modifier: Modifier = Modifier,
     onNavigateToMap: () -> Unit,
 ) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var count by remember { mutableStateOf(0) }
     var showPassword by remember { mutableStateOf(false) }
 
     val localFocusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = Modifier.pointerInput(Unit) {
+        modifier = modifier.pointerInput(Unit) {
             detectTapGestures(onTap = { localFocusManager.clearFocus() })
         },
-        topBar = { TopAppBar(title = { Text("Opencaching") }) }
+        topBar = { TopAppBar(title = { Text("Opencaching") }) },
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentAlignment = Alignment.TopCenter
+            contentAlignment = Alignment.TopCenter,
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,7 +69,7 @@ fun SignInScreen(
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Rounded.Person,
-                            contentDescription = "Username"
+                            contentDescription = "Username",
                         )
                     },
                 )
@@ -90,32 +90,24 @@ fun SignInScreen(
                     singleLine = true,
                     trailingIcon = {
                         IconButton(
-                            onClick = { showPassword = !showPassword }
+                            onClick = { showPassword = !showPassword },
                         ) {
                             Icon(
                                 imageVector = if (showPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                                 contentDescription = if (showPassword) "Hide password" else "Show password",
                             )
                         }
-                    }
+                    },
                 )
 
                 Button(
                     onClick = { onNavigateToMap() },
                     modifier = Modifier
                         .fillMaxWidth(fraction = 0.75f)
-                        .padding(8.dp)
+                        .padding(8.dp),
 
                 ) {
                     Text("Sign in")
-                }
-
-                Button(
-                    onClick = {
-                        count++
-                    }
-                ) {
-                    Text("Count: $count")
                 }
             }
         }
