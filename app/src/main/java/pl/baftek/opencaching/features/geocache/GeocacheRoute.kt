@@ -16,7 +16,11 @@ import pl.baftek.opencaching.data.CachesRepository
 import pl.baftek.opencaching.data.FullGeocache
 
 @Composable
-fun GeocacheRoute(code: String, onBackTap: () -> Unit) {
+fun GeocacheRoute(
+    code: String,
+    onNavUp: () -> Unit,
+    onNavigateToDescription: (String) -> Unit,
+) {
     val repository = remember { CachesRepository() }
 
     val geocache = remember { mutableStateOf<FullGeocache?>(null) }
@@ -38,6 +42,10 @@ fun GeocacheRoute(code: String, onBackTap: () -> Unit) {
             )
         }
     } else {
-        GeocacheScreen(geocache = geocache.value!!, onNavUp = onBackTap)
+        GeocacheScreen(
+            geocache = geocache.value!!,
+            onNavUp = onNavUp,
+            onNavigateToDescription = onNavigateToDescription,
+            )
     }
 }

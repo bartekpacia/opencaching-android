@@ -1,6 +1,7 @@
 package pl.baftek.opencaching.features.geocache
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ fun GeocacheScreen(
     geocache: FullGeocache,
     modifier: Modifier = Modifier,
     onNavUp: () -> Unit = {},
+    onNavigateToDescription: (String) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -208,6 +210,7 @@ fun GeocacheScreen(
                     icon = Icons.Rounded.List,
                     title = "Description",
                     subtitle = geocache.description.split(" ").take(4).joinToString(" ") + "...",
+                    onClick = { onNavigateToDescription(geocache.description) },
                 )
 
                 GeocacheInfoTile(
@@ -232,9 +235,10 @@ fun GeocacheInfoTile(
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     ListItem(
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
         leadingContent = {
             Icon(
                 imageVector = icon,
