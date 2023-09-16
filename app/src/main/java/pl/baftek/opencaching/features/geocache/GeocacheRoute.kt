@@ -1,6 +1,5 @@
 package pl.baftek.opencaching.features.geocache
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.width
@@ -25,9 +24,11 @@ fun GeocacheRoute(code: String, onBackTap: () -> Unit) {
     val httpClient = remember {
         HttpClient {
             install(ContentNegotiation) {
-                json(Json {
-                    ignoreUnknownKeys = true
-                })
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                    },
+                )
             }
         }
     }
@@ -43,7 +44,7 @@ fun GeocacheRoute(code: String, onBackTap: () -> Unit) {
     if (geocache.value == null) {
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             CircularProgressIndicator(
                 modifier = Modifier

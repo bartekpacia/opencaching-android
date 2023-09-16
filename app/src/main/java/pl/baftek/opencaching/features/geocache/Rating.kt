@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Rating(
-    modifier: Modifier = Modifier,
-    @FloatRange(from = 1.0, to = 5.0) rating: Float,
     title: String,
+    @FloatRange(from = 1.0, to = 5.0) rating: Float,
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = rating.toString(),
@@ -37,8 +37,7 @@ fun Rating(
         )
 
         Row(
-            modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             for (i in 1..5) {
                 val halved = i == rating.toInt() + 1 && rating % 1 != 0f
@@ -46,25 +45,25 @@ fun Rating(
                 val activeColor = MaterialTheme.colorScheme.primary
                 val inactiveColor = MaterialTheme.colorScheme.inversePrimary
 
-                Box(modifier = Modifier
-                    .height(12.dp)
-                    .width(12.dp)
-                    .clip(RoundedCornerShape(3f.dp))
-                    .drawBehind {
-                        drawRect(
-                            color = if (i - 0.5f <= rating) activeColor else inactiveColor,
-                            size = if (!halved) size else size.copy(width = size.width / 2)
-                        )
-
-                        if (halved) {
+                Box(
+                    modifier = Modifier
+                        .height(12.dp)
+                        .width(12.dp)
+                        .clip(RoundedCornerShape(3f.dp))
+                        .drawBehind {
                             drawRect(
-                                color = inactiveColor,
-                                topLeft = Offset(size.width / 2, 0f),
-                                size = size.copy(width = size.width / 2)
+                                color = if (i - 0.5f <= rating) activeColor else inactiveColor,
+                                size = if (!halved) size else size.copy(width = size.width / 2),
                             )
-                        }
 
-                    }
+                            if (halved) {
+                                drawRect(
+                                    color = inactiveColor,
+                                    topLeft = Offset(size.width / 2, 0f),
+                                    size = size.copy(width = size.width / 2),
+                                )
+                            }
+                        },
                 )
             }
         }
@@ -79,18 +78,18 @@ fun Rating(
 
 @Preview(showBackground = true)
 @Composable
-fun RatingPreview_1() {
+private fun RatingPreview_1() {
     Rating(
         rating = 2f,
-        title = "Difficulty"
+        title = "Difficulty",
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-fun RatingPreview_2() {
+private fun RatingPreview_2() {
     Rating(
         rating = 2.5f,
-        title = "Terrain"
+        title = "Terrain",
     )
 }
