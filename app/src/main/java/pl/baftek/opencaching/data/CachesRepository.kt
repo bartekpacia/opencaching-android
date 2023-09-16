@@ -5,6 +5,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.accept
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -15,7 +16,7 @@ const val CONSUMER_KEY = "duM7DuHSXQtLK7PCx9ee"
 
 class CachesRepository(private val client: HttpClient) {
     private val basicParams = "code|name|location|status|type"
-    private val fullParams = "code|name|location|status|type|owner|description|difficulty|terrain|size|hint|date"
+    private val fullParams = "code|name|location|status|type|url|owner|description|difficulty|terrain|size|hint|date_hidden|recommendations"
 
     /// https://opencaching.pl/okapi/services/caches/shortcuts/search_and_retrieve.html
     suspend fun searchAndRetrieve(bbox: BoundingBox): Map<String, Geocache> {
@@ -28,6 +29,8 @@ class CachesRepository(private val client: HttpClient) {
             parameter("retr_params", Json.encodeToString(mapOf("fields" to fullParams)))
             parameter("wrap", false)
         }
+
+        // debugLog("CachesRepository", "response: ${response.bodyAsText()}")
 
 
         val body = response.body<Map<String, Geocache>>()
@@ -50,12 +53,12 @@ class CachesRepository(private val client: HttpClient) {
     }
 
     /// https://opencaching.pl/okapi/services/caches/geocache.html
-    suspend fun getGeocache(code: String): Geocache {
+    suspend fun getGeocache(code: String): FullGeocache {
         val response = client.get("$API_URL/caches/geocache") {
             accept(ContentType.Application.Json)
             parameter("consumer_key", CONSUMER_KEY)
             parameter("cache_code", code)
-            parameter("fields", "code|name|location|status|type|url|owner")
+            parameter("fields", fullParams)
         }
 
         debugLog("CachesRepository", "response: $response")

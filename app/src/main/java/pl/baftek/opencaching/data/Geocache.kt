@@ -18,7 +18,7 @@ data class Geocache(
 ) {
     enum class Type { Traditional, Multi, Moving, Quiz, Own, Webcam, Other }
 
-    enum class Status { Available, TEMPORARILY_UNAVAILABLE, ARCHIVED }
+    enum class Status { Available, TEMPORARILY_UNAVAILABLE, Archived }
 }
 
 @Serializable
@@ -31,11 +31,12 @@ data class FullGeocache(
     val url: String,
     val owner: User,
     val description: String,
-    val difficulty: Double,
-    val terrain: Double,
+    val difficulty: Float,
+    val terrain: Float,
     val size: Int,
     val hint: String,
     @SerialName("date_hidden") val dateHidden: String,
+    val recommendations: Int,
 )
 
 @Serializable(with = LocationAsStringSerializer::class)

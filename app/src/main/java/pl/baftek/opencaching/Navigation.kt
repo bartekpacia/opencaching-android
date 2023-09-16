@@ -6,7 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pl.baftek.opencaching.features.geocache.GeocacheRoute
-import pl.baftek.opencaching.features.geocache.GeocacheScreen
 import pl.baftek.opencaching.features.map.MapScreen
 import pl.baftek.opencaching.features.sign_in.SignInScreen
 
