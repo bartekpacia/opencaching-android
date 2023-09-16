@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -54,8 +55,12 @@ fun Map(
         }
     ) {
         for (cache in caches) {
+            val state = rememberMarkerState(position = cache.location.toLatLng())
+
             Marker(
-                state = rememberMarkerState(key = cache.code, position = cache.location.toLatLng()),
+                state,
+                // FIXME: https://github.com/bartekpacia/opencaching/issues/3
+                // state = rememberMarkerState(key = cache.code, position = cache.location.toLatLng()),
                 title = cache.name,
                 snippet = cache.code,
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN),

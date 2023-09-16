@@ -38,7 +38,7 @@ import kotlin.time.Duration.Companion.seconds
 fun MapScreen(
     onNavigateToGeocache: (Geocache) -> Unit,
 ) {
-    val centerOfRudy = Location(latitude = 50.196168, longitude = 18.446953)
+    val centerOfRudy = remember { Location(latitude = 50.196168, longitude = 18.446953) }
 
     val scope = rememberCoroutineScope()
     val geocaches: SnapshotStateMap<String, Geocache> = rememberSaveable(
@@ -82,7 +82,7 @@ fun MapScreen(
             Map(
                 modifier = Modifier.padding(8.dp),
                 center = centerOfRudy,
-                caches = geocaches.values.toList(),
+                caches = geocaches.entries.map { it.value },
                 onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },
                 onMapBoundsChange = {
                     if (it == null) return@Map
@@ -95,13 +95,11 @@ fun MapScreen(
                         return@Map
                     }
 
-
                     debugLog("MapScreen", "onMapBoundsChange: $it")
 
                     scope.launch {
                         delay(500)
                         try {
-                            // geocaches.clear()
                             geocaches.putAll(repository.searchAndRetrieve(it))
                         } catch (e: Exception) {
                             e.printStackTrace()
