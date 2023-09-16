@@ -15,4 +15,4 @@
 local.properties
 
 .idea/
-androidApp/src/main/res/values/google_maps_api_key.xml
+app/src/main/res/values/google_maps_api_key.xml
