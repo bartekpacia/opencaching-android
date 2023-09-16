@@ -7,11 +7,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,12 +23,15 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import pl.baftek.opencaching.data.CachesRepository
 import pl.baftek.opencaching.data.Geocache
 import pl.baftek.opencaching.data.Location
 import pl.baftek.opencaching.debugLog
+import kotlin.time.Duration.Companion.seconds
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,6 +67,8 @@ fun MapScreen(
 
     val repository = remember { CachesRepository(httpClient) }
 
+    var lastInstant by remember { mutableStateOf(Clock.System.now()) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -77,8 +85,18 @@ fun MapScreen(
                 caches = geocaches.values.toList(),
                 onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },
                 onMapBoundsChange = {
-                    debugLog("MapScreen", "onMapBoundsChange: $it")
                     if (it == null) return@Map
+
+                    val currentInstant = Clock.System.now()
+                    val duration = currentInstant - lastInstant
+                    lastInstant = currentInstant
+
+                    if (duration < 1.seconds) {
+                        return@Map
+                    }
+
+
+                    debugLog("MapScreen", "onMapBoundsChange: $it")
 
                     scope.launch {
                         delay(500)
