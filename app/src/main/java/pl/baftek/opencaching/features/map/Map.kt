@@ -3,6 +3,7 @@ package pl.baftek.opencaching.features.map
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -54,22 +55,20 @@ fun Map(
         },
     ) {
         for (cache in caches) {
-            val state = rememberMarkerState(position = cache.location.toLatLng())
-
-            Marker(
-                state,
-                // FIXME: https://github.com/bartekpacia/opencaching/issues/3
-                // state = rememberMarkerState(key = cache.code, position = cache.location.toLatLng()),
-                title = cache.name,
-                snippet = cache.code,
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN),
-                onInfoWindowClick = {
-                    // Deadlock: https://stackoverflow.com/questions/70279262/navigating-with-compose-not-working-with-google-maps-on-android
-                    GlobalScope.launch(Dispatchers.Main) {
-                        onGeocacheClick(cache.code)
-                    }
-                },
-            )
+            key(cache.code) {
+                Marker(
+                    state = rememberMarkerState(key = cache.code, position = cache.location.toLatLng()),
+                    title = cache.name,
+                    snippet = cache.code,
+                    icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN),
+                    onInfoWindowClick = {
+                        // Deadlock: https://stackoverflow.com/questions/70279262/navigating-with-compose-not-working-with-google-maps-on-android
+                        GlobalScope.launch(Dispatchers.Main) {
+                            onGeocacheClick(cache.code)
+                        }
+                    },
+                )
+            }
         }
     }
 }
