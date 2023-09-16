@@ -2,7 +2,13 @@ package pl.baftek.opencaching.features.map
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -17,6 +23,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -69,44 +76,71 @@ fun MapScreen(
 
     var lastInstant by remember { mutableStateOf(Clock.System.now()) }
 
+    var selectedNavBarItem by remember { mutableStateOf(0) }
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Map") },
             )
         },
-    ) { padding ->
-        Column(
-            modifier = Modifier.padding(padding)
-        ) {
-            Map(
-                modifier = Modifier.padding(8.dp),
-                center = centerOfRudy,
-                caches = geocaches.entries.map { it.value },
-                onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },
-                onMapBoundsChange = {
-                    if (it == null) return@Map
+        content = { padding ->
+            Column(
+                modifier = Modifier.padding(padding)
+            ) {
+                Map(
+                    modifier = Modifier.padding(8.dp),
+                    center = centerOfRudy,
+                    caches = geocaches.entries.map { it.value },
+                    onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },
+                    onMapBoundsChange = {
+                        if (it == null) return@Map
 
-                    val currentInstant = Clock.System.now()
-                    val duration = currentInstant - lastInstant
-                    lastInstant = currentInstant
+                        val currentInstant = Clock.System.now()
+                        val duration = currentInstant - lastInstant
+                        lastInstant = currentInstant
 
-                    if (duration < 1.seconds) {
-                        return@Map
-                    }
+                        if (duration < 1.seconds) {
+                            return@Map
+                        }
 
-                    debugLog("MapScreen", "onMapBoundsChange: $it")
+                        debugLog("MapScreen", "onMapBoundsChange: $it")
 
-                    scope.launch {
-                        delay(500)
-                        try {
-                            geocaches.putAll(repository.searchAndRetrieve(it))
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+                        scope.launch {
+                            delay(500)
+                            try {
+                                geocaches.putAll(repository.searchAndRetrieve(it))
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
+        },
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    selected = 0 == selectedNavBarItem,
+                    onClick = { selectedNavBarItem = 0 },
+                    icon = { Icon(Icons.Rounded.Map, contentDescription = "Map") },
+                    label = { Text("Map") },
+                )
+
+                NavigationBarItem(
+                    selected = 1 == selectedNavBarItem,
+                    onClick = { selectedNavBarItem = 1 },
+                    icon = { Icon(Icons.Rounded.Person, contentDescription = "Profile") },
+                    label = { Text("Profile") },
+                )
+            }
         }
-    }
+    )
+}
+
+
+@Preview
+@Composable
+fun MapScreenPreview() {
+    MapScreen(onNavigateToGeocache = {})
 }
