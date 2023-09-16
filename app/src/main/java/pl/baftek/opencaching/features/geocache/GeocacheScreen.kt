@@ -53,7 +53,7 @@ fun GeocacheScreen(
     geocache: FullGeocache,
     modifier: Modifier = Modifier,
     onNavUp: () -> Unit = {},
-    onNavigateToDescription: (String) -> Unit = {},
+    onNavigateToDescription: () -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier,
@@ -210,7 +210,7 @@ fun GeocacheScreen(
                     icon = Icons.Rounded.List,
                     title = "Description",
                     subtitle = geocache.description.split(" ").take(4).joinToString(" ") + "...",
-                    onClick = { onNavigateToDescription(geocache.description) },
+                    onClick = onNavigateToDescription,
                 )
 
                 GeocacheInfoTile(

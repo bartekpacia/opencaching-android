@@ -19,7 +19,7 @@ import pl.baftek.opencaching.data.FullGeocache
 fun GeocacheRoute(
     code: String,
     onNavUp: () -> Unit,
-    onNavigateToDescription: (String) -> Unit,
+    onNavigateToDescription: () -> Unit,
 ) {
     val repository = remember { CachesRepository() }
 
@@ -46,6 +46,6 @@ fun GeocacheRoute(
             geocache = geocache.value!!,
             onNavUp = onNavUp,
             onNavigateToDescription = onNavigateToDescription,
-            )
+        )
     }
 }

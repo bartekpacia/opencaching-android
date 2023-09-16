@@ -53,7 +53,7 @@ fun GeocacheDescriptionScreen(
                 },
                 title = {
                     Box(
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         SingleChoiceSegmentedButtonRow(
                             modifier = Modifier.align(Alignment.Center),
@@ -62,7 +62,7 @@ fun GeocacheDescriptionScreen(
                                 icon = {},
                                 selected = viewMode == ViewMode.Web,
                                 onClick = { viewMode = ViewMode.Web },
-                                shape = MaterialTheme.shapes.small
+                                shape = MaterialTheme.shapes.small,
                             ) {
                                 Text("Web")
                             }
@@ -71,20 +71,20 @@ fun GeocacheDescriptionScreen(
                                 icon = {},
                                 selected = viewMode == ViewMode.Text,
                                 onClick = { viewMode = ViewMode.Text },
-                                shape = MaterialTheme.shapes.small
+                                shape = MaterialTheme.shapes.small,
                             ) {
                                 Text("Text")
                             }
                         }
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         AndroidView(
             modifier = Modifier.run { padding(padding) },
             factory = { context -> TextView(context) },
-            update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
+            update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) },
         )
     }
 }

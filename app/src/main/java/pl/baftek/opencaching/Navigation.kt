@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pl.baftek.opencaching.features.geocache.GeocacheRoute
 import pl.baftek.opencaching.features.geocache.description.GeocacheDescriptionRoute
-import pl.baftek.opencaching.features.map.MapScreen
+import pl.baftek.opencaching.features.map.MapRoute
 import pl.baftek.opencaching.features.signin.SignInRoute
 
 private object Destinations {
@@ -31,8 +31,10 @@ fun OpencachingNavHost(
             )
         }
         composable(Destinations.MAP_ROUTE) {
-            MapScreen(
-                onNavigateToGeocache = { cache -> navController.navigate("geocache/${cache.code}") },
+            MapRoute(
+                onNavigateToGeocache = { cache ->
+                    navController.navigate("geocache/${cache.code}")
+                },
             )
         }
         composable(Destinations.GEOCACHE_ROUTE) {
@@ -40,9 +42,9 @@ fun OpencachingNavHost(
             GeocacheRoute(
                 code = code,
                 onNavUp = { navController.popBackStack() },
-                onNavigateToDescription = { html ->
-                    navController.navigate("geocache/$code/description?html=$html")
-                }
+                onNavigateToDescription = {
+                    navController.navigate("geocache/$code/description")
+                },
             )
         }
 
