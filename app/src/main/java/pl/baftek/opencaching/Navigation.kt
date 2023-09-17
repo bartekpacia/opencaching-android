@@ -6,13 +6,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pl.baftek.opencaching.features.geocache.GeocacheRoute
-import pl.baftek.opencaching.features.map.MapScreen
+import pl.baftek.opencaching.features.geocache.description.GeocacheDescriptionRoute
+import pl.baftek.opencaching.features.map.MapRoute
 import pl.baftek.opencaching.features.signin.SignInRoute
 
 private object Destinations {
     const val SIGN_IN_ROUTE = "signin"
     const val MAP_ROUTE = "map/"
     const val GEOCACHE_ROUTE = "geocache/{code}"
+    const val GEOCACHE_DESCRIPTION_ROUTE = "geocache/{code}/description"
 }
 
 @Composable
@@ -29,15 +31,28 @@ fun OpencachingNavHost(
             )
         }
         composable(Destinations.MAP_ROUTE) {
-            MapScreen(
-                onNavigateToGeocache = { cache -> navController.navigate("geocache/${cache.code}") },
+            MapRoute(
+                onNavigateToGeocache = { cache ->
+                    navController.navigate("geocache/${cache.code}")
+                },
             )
         }
         composable(Destinations.GEOCACHE_ROUTE) {
             val code = it.arguments?.getString("code") ?: "empty"
             GeocacheRoute(
                 code = code,
-                onBackTap = { navController.popBackStack() },
+                onNavUp = { navController.popBackStack() },
+                onNavigateToDescription = {
+                    navController.navigate("geocache/$code/description")
+                },
+            )
+        }
+
+        composable(Destinations.GEOCACHE_DESCRIPTION_ROUTE) {
+            val html = it.arguments?.getString("html") ?: "empty"
+            GeocacheDescriptionRoute(
+                html = html,
+                onNavUp = { navController.popBackStack() },
             )
         }
     }

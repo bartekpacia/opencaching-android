@@ -24,7 +24,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -79,7 +78,6 @@ fun MapScreen(
                 modifier = Modifier.padding(padding),
             ) {
                 Map(
-                    modifier = Modifier.padding(8.dp),
                     center = centerOfRudy,
                     caches = geocaches.entries.map { it.value },
                     onGeocacheClick = { code -> onNavigateToGeocache(geocaches[code]!!) },

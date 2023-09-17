@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -6,6 +7,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.gitlab.arturbosch.detekt")
 }
+
+val properties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+
+val consumerKey = properties["okapi.consumerKey"] ?: throw IllegalStateException("consumerKey is null")
+val consumerSecret = properties["okapi.consumerSecret"] ?: throw IllegalStateException("consumerSecret is null")
 
 android {
     namespace = "pl.baftek.opencaching"
@@ -23,6 +31,18 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            type = "String",
+            name = "OKAPI_CONSUMER_KEY",
+            value = "\"${consumerKey}\"",
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "OKAPI_CONSUMER_SECRET",
+            value = "\"${consumerSecret}\"",
+        )
     }
 
     buildTypes {
@@ -43,6 +63,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -70,7 +91,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.2.0-alpha07")
     implementation("androidx.compose.material:material-icons-extended")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -99,6 +120,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
-    lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+    // lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 }
