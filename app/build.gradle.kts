@@ -1,4 +1,5 @@
 import io.gitlab.arturbosch.detekt.Detekt
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -6,6 +7,13 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("io.gitlab.arturbosch.detekt")
 }
+
+val properties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
+}
+
+val consumerKey = properties["okapi.consumerKey"] ?: throw IllegalStateException("consumerKey is null")
+val consumerSecret = properties["okapi.consumerSecret"] ?: throw IllegalStateException("consumerSecret is null")
 
 android {
     namespace = "pl.baftek.opencaching"
@@ -23,6 +31,18 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField(
+            type = "String",
+            name = "OKAPI_CONSUMER_KEY",
+            value = "\"${consumerKey}\"",
+        )
+
+        buildConfigField(
+            type = "String",
+            name = "OKAPI_CONSUMER_SECRET",
+            value = "\"${consumerSecret}\"",
+        )
     }
 
     buildTypes {
@@ -43,6 +63,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
