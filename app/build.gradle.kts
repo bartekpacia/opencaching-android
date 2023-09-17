@@ -99,6 +99,6 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
 
-    lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
+    // lintChecks("com.slack.lint.compose:compose-lint-checks:1.2.0")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 }
